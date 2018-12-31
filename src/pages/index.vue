@@ -1,11 +1,11 @@
 <template>
   <div class="app-wrap">
     <Item
-      v-for='item in list'
-      :id='item.id'
+      v-for='(item, i) in list'
+      :id='i'
       :title='item.title'
       :progress='item.progress'
-      @delHandle='delHandle(item.id)'
+      @delHandle='delHandle(i)'
       @progressHandle='progressHandle'
       @titleHandle='titleHandle'
       @upHandle='upHandle'
@@ -48,7 +48,6 @@ export default {
   methods: {
     addHandle () {
       this.list.push({
-        id: this.list.length,
         title: '',
         progress: 0
       })
@@ -56,7 +55,7 @@ export default {
     delHandle (id) {
       for (let l = this.list.length; l--; ) {
         const item = this.list[l]
-        if (item.id === id) {
+        if (l === id) {
           this.list.splice(l, 1)
           break
         }
@@ -65,7 +64,7 @@ export default {
     progressHandle (value, id) {
       for (let l = this.list.length; l--; ) {
         const item = this.list[l]
-        if (item.id === id) {
+        if (l === id) {
           item.progress = value
           break
         }
@@ -74,7 +73,7 @@ export default {
     titleHandle (value, id) {
       for (let l = this.list.length; l--; ) {
         const item = this.list[l]
-        if (item.id === id) {
+        if (l === id) {
           item.title = value
           break
         }
@@ -85,8 +84,6 @@ export default {
         return
       }
       const temp = this.list[id - 1]
-      this.list[id - 1].id = id
-      this.list[id].id = id - 1
       this.$set(this.list, id - 1, this.list[id])
       this.$set(this.list, id, temp)
       
@@ -97,8 +94,6 @@ export default {
         return
       }
       const temp = this.list[id + 1]
-      this.list[id + 1].id = id
-      this.list[id].id = id + 1
       this.$set(this.list, id + 1, this.list[id])
       this.$set(this.list, id, temp)
       

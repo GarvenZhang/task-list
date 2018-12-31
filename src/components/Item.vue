@@ -72,7 +72,6 @@ export default {
       this.$emit('upHandle', this.id)
     },
     downHandle (e) {
-      console.log(e.target)
       const target = e.target
       this.$emit('downHandle', this.id)
     }
