@@ -1,22 +1,20 @@
 # 任务列表小应用
 
-> 版本号: v0.0.0
+> 版本号: v1.0.0
 
 ## 以前实现的功能
 
-无
++ [v0.0.0](https://github.com/GarvenZhang/task-list/tree/v0.0.0)
 
 ## 此版本功能
 
-1 实现页面的布局, 样式, 呈现出样子来
+1 用vue重构, 实现基本逻辑
 
-<img src='./doc/v0.0.0-效果图一.png' width='50%'/>
+2 实现 ios 应用 模式
 
-2 本地存储数据(indexDB)
+<img src='./doc/v1.0.0-效果图一.png' width='50%'/>
 
-```
-无法完成, 改用vue后再做, 原生js写起来太麻烦, 双向绑定会更快
-```
+2 数据持久化(localStorage)
 
 ## 下一版本功能
 
