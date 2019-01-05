@@ -1,6 +1,6 @@
 <template>
   <div class="app-wrap">
-    <Item
+    <TaskItem
       v-for='(item, i) in list'
       :id='i'
       :title='item.title'
@@ -11,95 +11,91 @@
       @upHandle='upHandle'
       @downHandle='downHandle'
     />
-    <div class="add-wrap">
-      <button
-        type="button"
-        class="btn-add"
-        @click="addHandle"
-      >添加</button>
-    </div>
+    <AddIcon/>
   </div>
 </template>
 
 <script>
-import Item from "../components/Item";
+import TaskItem from "../components/TaskItem"
+import AddIcon from '../components/addIcon'
 
 export default {
   components: {
-    Item
+    TaskItem,
+    AddIcon
   },
   data() {
     return {
       list: []
     };
   },
-  updated () {
+  updated() {
     if (this.list.length === 0) {
-      return
+      return;
     }
-    localStorage.setItem('list', JSON.stringify({
-      data: this.list
-    }))
+    localStorage.setItem(
+      "list",
+      JSON.stringify({
+        data: this.list
+      })
+    );
   },
-  mounted () {
-    const list = localStorage.getItem('list') 
-    this.list = (list && JSON.parse(list).data) || []
+  mounted() {
+    const list = localStorage.getItem("list");
+    this.list = (list && JSON.parse(list).data) || [];
   },
   methods: {
-    addHandle () {
+    addHandle() {
       this.list.push({
-        title: '',
+        title: "",
         progress: 0
-      })
+      });
     },
-    delHandle (id) {
+    delHandle(id) {
       for (let l = this.list.length; l--; ) {
-        const item = this.list[l]
+        const item = this.list[l];
         if (l === id) {
-          this.list.splice(l, 1)
-          break
+          this.list.splice(l, 1);
+          break;
         }
       }
     },
-    progressHandle (value, id) {
+    progressHandle(value, id) {
       for (let l = this.list.length; l--; ) {
-        const item = this.list[l]
+        const item = this.list[l];
         if (l === id) {
-          item.progress = value
-          break
+          item.progress = value;
+          break;
         }
       }
     },
-    titleHandle (value, id) {
+    titleHandle(value, id) {
       for (let l = this.list.length; l--; ) {
-        const item = this.list[l]
+        const item = this.list[l];
         if (l === id) {
-          item.title = value
-          break
+          item.title = value;
+          break;
         }
       }
     },
-    upHandle (id) {
+    upHandle(id) {
       if (id === 0) {
-        return
+        return;
       }
-      const temp = this.list[id - 1]
-      this.$set(this.list, id - 1, this.list[id])
-      this.$set(this.list, id, temp)
-      
+      const temp = this.list[id - 1];
+      this.$set(this.list, id - 1, this.list[id]);
+      this.$set(this.list, id, temp);
     },
-    downHandle (id) {
-      console.log(id)
+    downHandle(id) {
+      console.log(id);
       if (id === this.list.length - 1) {
-        return
+        return;
       }
-      const temp = this.list[id + 1]
-      this.$set(this.list, id + 1, this.list[id])
-      this.$set(this.list, id, temp)
-      
+      const temp = this.list[id + 1];
+      this.$set(this.list, id + 1, this.list[id]);
+      this.$set(this.list, id, temp);
     }
   }
-
 };
 </script>
 
@@ -108,15 +104,6 @@ export default {
 <style scoped>
 .app-wrap {
   height: 100%;
-  padding: 20px;
-}
-.add-wrap {
-  text-align: center;
-}
-.add-wrap .btn-add {
-  color: cadetblue;
-  border: 2px solid rgb(173, 11, 11);
-  border-radius: 50%;
-  padding: 5px;
+  padding-top: 10px;
 }
 </style>

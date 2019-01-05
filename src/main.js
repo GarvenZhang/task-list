@@ -4,6 +4,7 @@ import App from './app'
 import router from './routers'
 
 import './assets/css/reset'
+import './assets/font/iconfont'
 
 Vue.use(VueRouter)
 
