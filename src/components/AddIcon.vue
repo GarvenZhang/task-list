@@ -8,7 +8,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    addHandle () {
+      
+    }
+  }
+};
 </script>
 
 <style scoped>

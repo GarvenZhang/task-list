@@ -114,7 +114,7 @@ export default {
   overflow-x: hidden;
 }
 .section-inner {
-  /* transform: translateX(-80px); */
+  transform: translateX(-80px);
 }
 .section-main {
   width: calc(100% + 80px);
