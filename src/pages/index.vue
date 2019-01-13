@@ -33,24 +33,8 @@ export default {
 			list: []
 		};
 	},
-	async mounted() {
-		this.list = await idb.keys("task", 1);
-		await idb.set(
-			"task",
-			[
-				{
-					id: 1,
-					name: "String",
-					priority: 1,
-					startTime: "1111111111111",
-					endTime: "11111111111",
-					status: 1,
-					recordId: 1,
-					tag: 1
-				}
-			],
-			0
-		);
+	async created() {
+		this.list = (await idb.getAll("task")) || [];
 
 		// tag
 		await idb.set("tag", "事业", 0);
@@ -66,11 +50,24 @@ export default {
 		await idb.set("type", "总结反省", 2);
 	},
 	methods: {
-		addHandle() {
-			this.list.push({
-				name: "",
-				progress: 0
-			});
+		async addHandle() {
+			let id = this.list.length;
+			await idb.set(
+				"task",
+				{
+					id,
+					name: "String",
+					priority: 1,
+					startTime: "1111111111111",
+					endTime: "11111111111",
+					status: 1,
+					recordId: 1,
+					tag: 1
+				},
+				id
+			);
+
+			this.list = (await idb.getAll("task")) || [];
 		},
 		delHandle(id) {
 			for (let l = this.list.length; l--; ) {
