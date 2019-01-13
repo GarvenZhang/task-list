@@ -12,16 +12,28 @@
 							<div class="priority-wrap">
 								<span class="txt-priority">{{id}}</span>
 							</div>
-							<input type="text" class="inp-title" placeholder="任务名称" :value="name" @input="titleHandle">
-							<select name>
-								<option value>1</option>
-								<option value>2</option>
-								<option value>3</option>
+							<input
+								type="text"
+								class="inp-title"
+								placeholder="任务名称"
+								:value="name"
+								@input="updateData($event, 'name')"
+							>
+							<select @change="updateData($event, 'status')" :value="taskData.status">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
 							</select>
 						</div>
 					</div>
 					<div class="row row--progress">
-						<input type="range" :id="id" class="inp-progress" :value="progress" @change="progressHandle">
+						<input
+							type="range"
+							:id="id"
+							class="inp-progress"
+							:value="progress"
+							@change="updateData($event, 'progress')"
+						>
 						<label :for="id" class="label">{{progress}}%</label>
 					</div>
 					<!-- <div class="detail-wrap">
@@ -42,7 +54,7 @@
 				</div>
 			</div>
 			<div class="section-aside">
-				<RecordList :recordList="recordList"/>
+				<!-- <RecordList :recordList="recordList"/> -->
 				<!-- <AddIcon from="TaskItem" class="addicon-wrap"/> -->
 			</div>
 		</div>
@@ -58,7 +70,8 @@ export default {
 	props: {
 		id: Number,
 		name: String,
-		progress: Number
+		progress: Number,
+		taskData: Object
 	},
 	components: {
 		AddIcon,
@@ -71,7 +84,7 @@ export default {
 		};
 	},
 	async created() {
-		this.recordList = (await idb.get("record", 0)) || [];
+		this.recordList = (await idb.get("record", this.id)) || [];
 	},
 	methods: {
 		async addRecord() {
@@ -84,23 +97,32 @@ export default {
 				img: []
 			});
 
-			await idb.set("record", this.recordList, 0);
+			await idb.set("record", this.recordList, this.id);
 
-			this.recordList = await idb.get("record", 0);
+			this.recordList = await idb.get("record", this.id);
 		},
 		delHandle() {
 			if (confirm("确定删除?")) {
 				this.$emit("delHandle");
 			}
 		},
-		progressHandle(e) {
-			const target = e.target;
-			this.$emit("progressHandle", parseInt(target.value), this.id);
+		async updateData(e, name) {
+			let val = e.target.value;
+
+			if (name === "progress") {
+				val = parseInt(val);
+			}
+
+			await idb.set(
+				"task",
+				Object.assign({}, this.taskData, {
+					[name]: val
+				}),
+				this.id
+			);
+			this.$emit("getList");
 		},
-		titleHandle(e) {
-			const target = e.target;
-			this.$emit("titleHandle", target.value, this.id);
-		},
+
 		upHandle(e) {
 			const target = e.target;
 			this.$emit("upHandle", this.id);

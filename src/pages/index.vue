@@ -3,13 +3,15 @@
 		<TaskItem
 			v-for="(item, i) in list"
 			:id="i"
-			:title="item.name"
+			:name="item.name"
+			:taskData="item"
 			:progress="item.progress"
 			@delHandle="delHandle(i)"
 			@progressHandle="progressHandle"
 			@titleHandle="titleHandle"
 			@upHandle="upHandle"
 			@downHandle="downHandle"
+			@getList="getList"
 		/>
 		<AddIcon from="Index" @addHandle="addHandle"/>
 		<Input/>
@@ -91,10 +93,13 @@ export default {
 			for (let l = this.list.length; l--; ) {
 				const item = this.list[l];
 				if (l === id) {
-					item.title = value;
+					item.name = value;
 					break;
 				}
 			}
+		},
+		async getList() {
+			this.list = (await idb.getAll("task")) || [];
 		},
 		upHandle(id) {
 			if (id === 0) {
