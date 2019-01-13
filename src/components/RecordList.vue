@@ -19,28 +19,39 @@
 
 <script>
 export default {
-  props: {
-    id: String
-  },
-  
+	props: {
+		id: String,
+		/**
+     * recordListItem
+     * {
+				id: String,
+				time: String,
+				progress: Number,
+				type: Number,
+				record: String,
+				img: Array
+			}
+     */
+		recordList: Array
+	}
 };
 </script>
 
 
 <style scoped>
 .record-list {
-  font: 100 12px/1.2 cursive;
-  padding-right: 2px;
+	font: 100 12px/1.2 cursive;
+	padding-right: 2px;
 }
 .record-item {
-  border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
 }
 .record-item:nth-last-of-type(1) {
-  border-bottom: none;
+	border-bottom: none;
 }
 .textarea {
-  width: 100%;
-  background-color: #dcd5d5;
+	width: 100%;
+	background-color: #dcd5d5;
 }
 </style>
 

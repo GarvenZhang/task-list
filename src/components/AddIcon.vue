@@ -14,12 +14,9 @@ export default {
 			switch (this.from) {
 				case "TaskITEM":
 					this.$root.Bus.$emit("addTaskItem");
-
 					break;
-
 				case "Index":
 					this.$emit("addHandle");
-
 					break;
 			}
 		}

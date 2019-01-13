@@ -24,23 +24,26 @@
 						<input type="range" :id="id" class="inp-progress" :value="progress" @change="progressHandle">
 						<label :for="id" class="label">{{progress}}%</label>
 					</div>
-					<div class="detail-wrap">
+					<!-- <div class="detail-wrap">
 						<div class="icon-wrap">
 							<div class="icon-inner">
 								<span class="iconfont icon-down"></span>
 								<span class="iconfont icon-down"></span>
 							</div>
 						</div>
+					</div>-->
+					<div class="option-wrapper">
+						<a href="javascript:;" @click="addRecord">添加</a>
 					</div>
-					<div class="cover-wrap hide"></div>
+					<!-- <div class="cover-wrap hide"></div> -->
 				</div>
 				<div class="del-area">
 					<span class="iconfont icon-close-circle" @click="delHandle"></span>
 				</div>
 			</div>
 			<div class="section-aside">
-				<RecordList/>
-				<AddIcon from="TaskItem" class="addicon-wrap"/>
+				<RecordList :recordList="recordList"/>
+				<!-- <AddIcon from="TaskItem" class="addicon-wrap"/> -->
 			</div>
 		</div>
 	</section>
@@ -53,14 +56,30 @@ import RecordList from "../components/RecordList";
 export default {
 	props: {
 		id: Number,
-		title: String,
+		name: String,
 		progress: Number
 	},
 	components: {
 		AddIcon,
 		RecordList
 	},
+	data() {
+		return {
+			recordList: [],
+			num: 1
+		};
+	},
 	methods: {
+		addRecord() {
+			this.recordList.push({
+				id: this.num++,
+				time: "11111",
+				progress: 10,
+				type: 1,
+				record: "hhhhhhhh",
+				img: []
+			});
+		},
 		delHandle() {
 			if (confirm("确定删除?")) {
 				this.$emit("delHandle");
@@ -212,6 +231,13 @@ export default {
 .addicon-wrap >>> .icon-plus-circle {
 	font-size: 18px;
 	color: #6da995;
+}
+.option-wrapper {
+	display: flex;
+}
+.section-aside {
+	max-height: 200px;
+	overflow: auto;
 }
 </style>
 
