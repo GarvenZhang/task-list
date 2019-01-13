@@ -18,6 +18,7 @@
 <script>
 import TaskItem from "../components/TaskItem";
 import AddIcon from "../components/addIcon";
+import idb from '../lib/indexeddb'
 
 export default {
 	components: {
@@ -40,9 +41,23 @@ export default {
 			})
 		);
 	},
-	mounted() {
+	async mounted() {
 		const list = localStorage.getItem("list");
-		this.list = (list && JSON.parse(list).data) || [];
+    this.list = (list && JSON.parse(list).data) || [];
+    
+    // tag
+    await idb.set('tag', '事业', 0)
+    await idb.set('tag', '生活', 1)
+    await idb.set('tag', '家庭', 2)
+    await idb.set('tag', '健康', 3)
+    await idb.set('tag', '交际', 4)
+    await idb.set('tag', '思维', 5)
+
+    // type
+    await idb.set('type', '进度记录', 0)
+    await idb.set('type', '任务步骤', 1)
+    await idb.set('type', '总结反省', 2)
+
 	},
 	methods: {
 		addHandle() {
