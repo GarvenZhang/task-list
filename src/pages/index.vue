@@ -33,20 +33,24 @@ export default {
 			list: []
 		};
 	},
-	updated() {
-		if (this.list.length === 0) {
-			return;
-		}
-		localStorage.setItem(
-			"list",
-			JSON.stringify({
-				data: this.list
-			})
-		);
-	},
 	async mounted() {
-		const list = localStorage.getItem("list");
-		this.list = (list && JSON.parse(list).data) || [];
+		this.list = await idb.keys("task", 1);
+		await idb.set(
+			"task",
+			[
+				{
+					id: 1,
+					name: "String",
+					priority: 1,
+					startTime: "1111111111111",
+					endTime: "11111111111",
+					status: 1,
+					recordId: 1,
+					tag: 1
+				}
+			],
+			0
+		);
 
 		// tag
 		await idb.set("tag", "事业", 0);

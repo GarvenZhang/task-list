@@ -1,20 +1,16 @@
 <template>
-  <ul class="record-list">
-    <li class="record-item">
-      <span class="txt-progress fr">49%</span>
-      <span class="txt-time">01-12 14:30</span>
-      <select name="" >
-        <option value="">1</option>
-      </select>
-      <p>
-        <textarea
-          placeholder="写下任务进度记录~"
-          class="textarea"
-          rows="1"
-        ></textarea>
-      </p>
-    </li>
-  </ul>
+	<ul class="record-list">
+		<li class="record-item" v-for="(item, index) in recordList" :key="index">
+			<span class="txt-progress fr">{{ item.progress }}%</span>
+			<span class="txt-time">{{ item.time }}</span>
+			<select name>
+				<option value>1</option>
+			</select>
+			<p>
+				<textarea placeholder="写下任务进度记录~" class="textarea" rows="1" v-model="item.name"></textarea>
+			</p>
+		</li>
+	</ul>
 </template>
 
 <script>
