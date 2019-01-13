@@ -1,10 +1,17 @@
 <template>
 	<div>
 		<router-view></router-view>
+    <Navigator/>
 	</div>
 </template>
 
 <script>
-export default {};
+import Navigator from './components/Navigator'
+
+export default {
+  components: {
+    Navigator
+  }
+};
 </script>
 

@@ -302,7 +302,7 @@ i {
 }
 
 .hide {
-  display: none;
+  display: none!important;
 }
 
 .fl {

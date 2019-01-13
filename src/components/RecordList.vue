@@ -3,6 +3,9 @@
     <li class="record-item">
       <span class="txt-progress fr">49%</span>
       <span class="txt-time">01-12 14:30</span>
+      <select name="" >
+        <option value="">1</option>
+      </select>
       <p>
         <textarea
           placeholder="写下任务进度记录~"

@@ -13,6 +13,11 @@
 								<span class="txt-priority">{{id}}</span>
 							</div>
 							<input type="text" class="inp-title" placeholder="任务名称" :value="title" @input="titleHandle">
+              <select name="">
+                <option value="">1</option>
+                <option value="">2</option>
+                <option value="">3</option>                
+              </select>
 						</div>
 					</div>
 					<div class="row row--progress">
@@ -90,7 +95,7 @@ export default {
 	overflow-x: hidden;
 }
 .section-inner {
-	transform: translateX(-80px);
+	/* transform: translateX(-80px); */
 }
 .section-main {
 	width: calc(100% + 80px);
@@ -134,7 +139,6 @@ export default {
 }
 .section .lt-area {
 	position: relative;
-	width: 50%;
 }
 .section .priority-wrap {
 	position: absolute;
@@ -152,9 +156,11 @@ export default {
 	color: #d29e9e;
 }
 .section .inp-title {
+  width: 150px;
 	font-size: 18px;
 	color: #8c4545;
-	margin-left: 40px;
+  margin-left: 40px;
+  border-right: 1px solid;
 }
 .row--title {
 	position: relative;
