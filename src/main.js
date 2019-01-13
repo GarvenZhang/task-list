@@ -10,5 +10,10 @@ Vue.use(VueRouter)
 
 new Vue({
   router,
+  data () {
+    return {
+      Bus: new Vue()
+    }
+  },
   render: h => h(App)
 }).$mount('#root')

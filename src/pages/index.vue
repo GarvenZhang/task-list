@@ -11,7 +11,7 @@
       @upHandle='upHandle'
       @downHandle='downHandle'
     />
-    <AddIcon/>
+    <AddIcon :from="Index" @addHandle="addHandle"/>
   </div>
 </template>
 

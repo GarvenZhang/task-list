@@ -9,9 +9,20 @@
 
 <script>
 export default {
+  props: {
+    from: String
+  },
   methods: {
     addHandle () {
+      switch (this.from) {
+        case "TaskITEM":
+          this.$emit('addHandle')
+          break
       
+        case "Index":
+          this.$root.Bus.emit('addTaskItem')
+          break
+      }
     }
   }
 };

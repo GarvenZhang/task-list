@@ -59,7 +59,7 @@
       </div>
       <div class="section-aside">
         <RecordList/>
-        <AddIcon class="addicon-wrap"/>
+        <AddIcon :from="TaskItem" class="addicon-wrap"/>
       </div>
     </div>
   </section>
