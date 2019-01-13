@@ -41,8 +41,13 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'],
-            plugins: ['transform-function-bind']
+            presets: [
+              '@babel/preset-env'
+            ],
+            plugins: [
+              '@babel/plugin-transform-runtime',
+              'transform-function-bind'
+            ]
           }
         }
       },

@@ -1,4 +1,4 @@
-# indexedDB文档
+# tasklist文档
 
 ## task对象仓库
 
@@ -10,7 +10,8 @@
   startTime: String,
   endTime: String,
   status: Number,
-  recordId: String
+  recordId: String,
+  tag: Number
 }
 ```
 
@@ -42,7 +43,7 @@
 }
 ```
 
-### type
+## type对象仓库
 
 + 0: 进度记录
 + 1: 任务步骤
@@ -63,4 +64,11 @@
 }
 ```
 
+## tag
 
++ 0: 事业
++ 1: 生活
++ 2: 家庭
++ 3: 健康
++ 4: 交际
++ 5: 思维
