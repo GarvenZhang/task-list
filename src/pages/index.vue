@@ -3,7 +3,7 @@
 		<TaskItem
 			v-for="(item, i) in list"
 			:id="i"
-			:title="item.title"
+			:title="item.name"
 			:progress="item.progress"
 			@delHandle="delHandle(i)"
 			@progressHandle="progressHandle"
@@ -12,17 +12,20 @@
 			@downHandle="downHandle"
 		/>
 		<AddIcon from="Index" @addHandle="addHandle"/>
+		<Input/>
 	</div>
 </template>
 
 <script>
 import TaskItem from "../components/TaskItem";
 import AddIcon from "../components/addIcon";
+import Input from "../components/Input";
 
 export default {
 	components: {
 		TaskItem,
-		AddIcon
+		AddIcon,
+		Input
 	},
 	data() {
 		return {
@@ -47,7 +50,7 @@ export default {
 	methods: {
 		addHandle() {
 			this.list.push({
-				title: "",
+				name: "",
 				progress: 0
 			});
 		},
@@ -87,7 +90,6 @@ export default {
 			this.$set(this.list, id, temp);
 		},
 		downHandle(id) {
-			console.log(id);
 			if (id === this.list.length - 1) {
 				return;
 			}
