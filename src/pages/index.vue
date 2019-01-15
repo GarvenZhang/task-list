@@ -2,16 +2,21 @@
 	<div class="app-wrap">
 		<TaskItem
 			v-for="(item, i) in list"
-			:id="i"
+			:id="item.id"
 			:name="item.name"
-			:taskData="item"
 			:progress="item.progress"
+      :priority="item.priority"
+      :endTime="item.endTime"
+      :status="item.status"
+      :tag="item.tag"
+      :data="item"
 			@delHandle="delHandle(i)"
 			@progressHandle="progressHandle"
 			@titleHandle="titleHandle"
 			@upHandle="upHandle"
 			@downHandle="downHandle"
 			@getList="getList"
+      :key="item.id"
 		/>
 		<AddIcon from="Index" @addHandle="addHandle"/>
 		<Input/>
@@ -38,7 +43,7 @@ export default {
 	async created() {
 		this.list = (await idb.getAll("task")) || [];
 
-		// tag
+    // tag
 		await idb.set("tag", "事业", 0);
 		await idb.set("tag", "生活", 1);
 		await idb.set("tag", "家庭", 2);
@@ -58,13 +63,13 @@ export default {
 				"task",
 				{
 					id,
-					name: "String",
-					priority: 1,
-					startTime: "1111111111111",
-					endTime: "11111111111",
+					name: "",
+					priority: id,
+					startTime: +Date.now(),
+					endTime: +Date.now(),
 					status: 1,
-					recordId: 1,
-					tag: 1
+          tag: 1,
+          progress: 0
 				},
 				id
 			);

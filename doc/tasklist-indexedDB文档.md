@@ -4,13 +4,12 @@
 
 ```javascript
 {
-  id: String,
+  id: Number,
   name: String,
   priority: Number,
-  startTime: String,
-  endTime: String,
+  startTime: Number,
+  endTime: Number,
   status: Number,
-  recordId: String,
   tag: Number
 }
 ```
@@ -29,17 +28,13 @@
 
 ```javascript
 {
-  id: String,
-  recordList: [
-    {
-      id: String,
-      time: String,
-      progress: Number,
-      type: Number,
-      record: String,
-      img: Array
-    }
-  ]
+  id: Number,
+  taskId: Number
+  time: String,
+  progress: Number,
+  type: Number,
+  record: String,
+  img: Array
 }
 ```
 
@@ -57,7 +52,7 @@
 
 ```javascript
 {
-  id: String,
+  id: Number,
   name: String,
   src: String,
   blob: Blob
