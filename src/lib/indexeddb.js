@@ -12,36 +12,34 @@ const dbPromise = openDb('tasklist', 1, upgradeDB => {
 })
 
 export default {
-  async get(storeName, key) {
+  async get (storeName, key) {
     const db = await dbPromise
     return db.transaction(storeName).objectStore(storeName).get(key)
   },
-  async set(storeName, val, key) {
+  async set (storeName, val, key) {
     const db = await dbPromise
     const tx = db.transaction(storeName, 'readwrite')
     tx.objectStore(storeName).put(val, key)
     return tx.complete
   },
-  async delete(storeName, key) {
+  async delete (storeName, key) {
     const db = await dbPromise
     const tx = db.transaction(storeName, 'readwrite')
     tx.objectStore(storeName).delete(key)
     return tx.complete
   },
-  async clear(storeName) {
+  async clear (storeName) {
     const db = await dbPromise
     const tx = db.transaction(storeName, 'readwrite')
     tx.objectStore(storeName).clear()
     return tx.complete
   },
-  async keys(storeName, key) {
+  async keys (storeName, key) {
     const db = await dbPromise
     return db.transaction(storeName).objectStore(storeName).getAllKeys(key)
-
   },
-
-  async getAll(storeName) {
+  async getAll (storeName) {
     const db = await dbPromise
-    return db.transaction(storeName).objectStore(storeName).getAll();
+    return db.transaction(storeName).objectStore(storeName).getAll()
   }
 }

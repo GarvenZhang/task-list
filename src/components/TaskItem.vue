@@ -16,30 +16,30 @@
             </div>
             <div class="lt-area">
               <div class="priority-wrap">
-                <span class="txt-priority">{{id}}</span>
+                <span class="txt-priority">{{data.priority}}</span>
               </div>
               <input
                 type="text"
                 class="inp-title"
                 placeholder="任务名称"
-                :value="name"
+                :value="data.name"
                 @input="updateData($event, 'name')"
               >
-              <Select :status="status" :tag="tags" @updateData="updateData"/>
+              <Select :status="data.status" :tag="tags" @updateData="updateData"/>
             </div>
           </div>
           <div class="row row--progress">
             <input
               type="range"
-              :id="id"
+              :id="data.id"
               class="inp-progress"
-              :value="progress"
+              :value="data.progress"
               @change="updateData($event, 'progress')"
             >
             <label
-              :for="id"
+              :for="data.id"
               class="label"
-            >{{progress}}%</label>
+            >{{data.progress}}%</label>
           </div>
           <!-- <div class="detail-wrap">
 						<div class="icon-wrap">
@@ -54,7 +54,7 @@
               href="javascript:;"
               @click="addRecord"
             >添加</a>
-            <span class="txt-endTime">{{timeFormat(endTime)}}</span>
+            <span class="txt-endTime">{{timeFormat(data.endTime)}}</span>
           </div>
           <!-- <div class="cover-wrap hide"></div> -->
         </div>
@@ -66,8 +66,7 @@
         </div>
       </div>
       <div class="section-aside">
-        <!-- <RecordList :recordList="recordList"/> -->
-        <!-- <AddIcon from="TaskItem" class="addicon-wrap"/> -->
+        <RecordList :recordList="recordList" :taskId="data.id"/>
       </div>
     </div>
   </section>
@@ -81,14 +80,18 @@ import idb from "../lib/indexeddb";
 
 export default {
   props: {
-    id: Number,
-    name: String,
-    priority: Number,
-    endTime: Number,
-    status: Number,
-    tag: Number,
-    data: Object,
-    progress: Number
+    data: {
+      type: Object,
+      default: {
+        id: Number,
+        name: String,
+        progress: Number,
+        priority: Number,
+        endTime: Number,
+        status: Number,
+        tag: Number
+      }
+    },
   },
   components: {
     AddIcon,
@@ -98,13 +101,14 @@ export default {
   data() {
     return {
       recordList: [],
-      num: 1,
-      tags: []
+      tags: [],
+      type: []
     };
   },
   async created() {
-    this.recordList = (await idb.get("record", this.id)) || [];
-    this.tags = (await idb.getAll("tag")) || [];
+    this.recordList = (await idb.get("record", this.data.id)) || []
+    this.tags = (await idb.getAll("tag")) || []
+    this.type = (await idb.getAll('type')) || []
   },
   methods: {
     timeFormat(time) {
@@ -112,20 +116,33 @@ export default {
     },
     async addRecord() {
       const copy = this.recordList;
+      const len = this.recordList.length;
+      const { id, progress } = this.data;
+
+      if (len > 0) {
+        const lastItem = this.recordList[len - 1];
+
+        if (this.isEmpty(lastItem.record)) {
+          alert('请填写任务进度记录！')
+          return;
+        }
+      }
+
       const cur = {
-        id: this.num++,
-        taskId: 1,
+        id: len,
+        taskId: id,
         time: "11111",
-        progress: 10,
-        type: 1,
-        record: "hhhhhhhh",
+        progress,
+        type: '2',
+        record: "",
         img: []
       };
 
       // 请求
-      await idb.set("record", copy.concat(cur), this.id);
+      await idb.set("record", cur, len);
+
       // update
-      copy.push(cur);
+      this.recordList.push(cur);
     },
     delHandle() {
       if (confirm("确定删除?")) {
@@ -163,6 +180,9 @@ export default {
     downHandle(e) {
       const target = e.target;
       this.$emit("downHandle", this.id);
+    },
+    isEmpty (str) {
+      return str.trim() === '';
     }
   }
 };

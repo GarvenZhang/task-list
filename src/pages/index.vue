@@ -2,21 +2,14 @@
 	<div class="app-wrap">
 		<TaskItem
 			v-for="(item, i) in list"
-			:id="item.id"
-			:name="item.name"
-			:progress="item.progress"
-      :priority="item.priority"
-      :endTime="item.endTime"
-      :status="item.status"
-      :tag="item.tag"
-      :data="item"
-			@delHandle="delHandle(i)"
-			@progressHandle="progressHandle"
-			@titleHandle="titleHandle"
-			@upHandle="upHandle"
-			@downHandle="downHandle"
-			@getList="getList"
       :key="item.id"
+      :data="item"
+      :tags="tagList"
+			@delHandle="delHandle(i)"
+			@upHandle="upHandle(item, i)"
+			@downHandle="downHandle(item, i)"
+			@getList="getList"
+      
 		/>
 		<AddIcon from="Index" @addHandle="addHandle"/>
 		<Input/>
@@ -28,6 +21,10 @@ import TaskItem from "../components/TaskItem";
 import AddIcon from "../components/addIcon";
 import Input from "../components/Input";
 import idb from "../lib/indexeddb";
+import bus from '../components/Bus'
+
+import { tag } from '../data/tag';
+import { type } from '../data/type';
 
 export default {
 	components: {
@@ -37,28 +34,37 @@ export default {
 	},
 	data() {
 		return {
-			list: []
+      list: [],
+      typeList: [],
+      tagList: []
 		};
 	},
 	async created() {
-		this.list = (await idb.getAll("task")) || [];
 
-    // tag
-		await idb.set("tag", "事业", 0);
-		await idb.set("tag", "生活", 1);
-		await idb.set("tag", "家庭", 2);
-		await idb.set("tag", "健康", 3);
-		await idb.set("tag", "交际", 4);
-		await idb.set("tag", "思维", 5);
+    // 需修改, 不用每次都set
+    await this.initDB(tag, 'tag');
+    await this.initDB(type, 'type');
+	
+    // 获取TaskList
+    await this.getList();
+    // 获取typeList
+    await this.getTypeList();
+    // 获取tagList
+    await this.getTagList();
 
-		// type
-		await idb.set("type", "进度记录", 0);
-		await idb.set("type", "任务步骤", 1);
-		await idb.set("type", "总结反省", 2);
+    // 监听
+    bus.$on('getTagList', cb => {
+      cb(this.tagList)
+      console.log(cb)
+    })
+    bus.$on('getTypeList', cb => {
+      cb(this.typeList)
+    })
+
 	},
 	methods: {
 		async addHandle() {
-			let id = this.list.length;
+			let id = this.list.length + 1;
 			await idb.set(
 				"task",
 				{
@@ -69,13 +75,14 @@ export default {
 					endTime: +Date.now(),
 					status: 1,
           tag: 1,
-          progress: 0
+          progress: 0,
 				},
 				id
 			);
 
 			this.list = (await idb.getAll("task")) || [];
-		},
+    },
+    
 		delHandle(id) {
 			for (let l = this.list.length; l--; ) {
 				const item = this.list[l];
@@ -84,44 +91,79 @@ export default {
 					break;
 				}
 			}
-		},
-		progressHandle(value, id) {
-			for (let l = this.list.length; l--; ) {
-				const item = this.list[l];
-				if (l === id) {
-					item.progress = value;
-					break;
-				}
-			}
-		},
-		titleHandle(value, id) {
-			for (let l = this.list.length; l--; ) {
-				const item = this.list[l];
-				if (l === id) {
-					item.name = value;
-					break;
-				}
-			}
-		},
+    },
+    
 		async getList() {
-			this.list = (await idb.getAll("task")) || [];
-		},
-		upHandle(id) {
-			if (id === 0) {
+      this.list = this.sort((await idb.getAll("task"))) || [];
+    },
+
+    async getTypeList () {
+      this.typeList = (await idb.getAll("type")) || [];
+    },
+
+    async getTagList () {
+      this.tagList = (await idb.getAll("tag")) || [];
+    },
+    
+		async upHandle(data, index) {
+      // up，就是减少
+      // 找上一项，上一项的priority + 1
+      // 当前项，当前项的priority - 1
+      // 前提：数组一直都是排序的
+      // 目标：当前项
+      const priority = data.priority;
+
+			if (priority === 1) {
 				return;
-			}
-			const temp = this.list[id - 1];
-			this.$set(this.list, id - 1, this.list[id]);
-			this.$set(this.list, id, temp);
-		},
-		downHandle(id) {
-			if (id === this.list.length - 1) {
+      }
+
+      const cur = Object.assign({}, this.list[index], {
+        priority: priority - 1
+      });
+      const prev = Object.assign({}, this.list[index - 1], {
+        priority
+      });
+
+      await idb.set('task', prev, prev.id);
+      await idb.set('task', cur, cur.id);
+
+      this.$set(this.list, index, prev);
+      this.$set(this.list, index - 1, cur);
+    },
+    
+		async downHandle(data, index) {
+			const priority = data.priority;
+
+			if (priority === this.list.length) {
 				return;
-			}
-			const temp = this.list[id + 1];
-			this.$set(this.list, id + 1, this.list[id]);
-			this.$set(this.list, id, temp);
-		}
+      }
+
+      const cur = Object.assign({}, this.list[index], {
+        priority: priority + 1
+      });
+      const next = Object.assign({}, this.list[index + 1], {
+        priority
+      });
+
+      await idb.set('task', next, next.id);
+      await idb.set('task', cur, cur.id);
+
+      this.$set(this.list, index, next);
+      this.$set(this.list, index + 1, cur);
+
+    },
+
+    sort (list) {
+      return list.sort((a, b) => {
+        return a.priority - b.priority;
+      });
+    },
+
+    async initDB (data, tableName) {
+      for (let item of data) {
+        await idb.set(tableName, item.name, item.id); 
+      }
+    }
 	}
 };
 </script>

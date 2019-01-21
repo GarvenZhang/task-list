@@ -1,22 +1,31 @@
 <template>
-	<ul class="record-list">
+	<!-- <ul class="record-list">
 		<li class="record-item" v-for="(item, index) in recordList" :key="index">
 			<span class="txt-progress fr">{{ item.progress }}%</span>
 			<span class="txt-time">{{ item.time }}</span>
-			<select name>
-				<option value>1</option>
-			</select>
+			<Select />
 			<p>
-				<textarea placeholder="写下任务进度记录~" class="textarea" rows="1" v-model="item.name"></textarea>
+				<textarea placeholder="写下任务进度记录~" class="textarea" rows="1" v-model="item.record" @change="handleOnChange($event, item.id)" @blur="handleOnBlur"></textarea>
 			</p>
 		</li>
-	</ul>
+	</ul> -->
 </template>
 
 <script>
+import idb from "../lib/indexeddb";
+import Select from './Select'
+
 export default {
+  components: {
+    // Select
+  },
+  data () {
+    return {
+      tagList: []
+    }
+  },
 	props: {
-		id: String,
+		taskId: Number,
 		/**
      * recordListItem
      * {
@@ -29,7 +38,43 @@ export default {
 			}
      */
 		recordList: Array
-	}
+  },
+  created () {
+   console.log(this.recordList)
+  },
+  methods: {
+    async handleOnChange (e, id) {
+      const value = e.target.value;
+      if(this.isEmpty(value)) {
+        return;
+      }
+
+      const result = this.recordList.map((item) => {
+        if (item.id === id) {
+          item.record = value.trim()
+        }
+
+        return item;
+      });
+
+      await idb.set("record", result, this.taskId);
+    },
+    handleOnBlur (e) {
+      const value = e.target.value;
+
+      if(this.isEmpty(value)) {
+        alert('请填写任务进度记录！')
+        return;
+      }
+    },
+    isEmpty (str) {
+      return str.trim() === '';
+    },
+    
+    getTagList () {
+
+    }
+  }
 };
 </script>
 

@@ -4,7 +4,7 @@
     v-model="cStatus"
   >
     <option
-      v-for="(item, index) in tag"
+      v-for="(item, index) in tagList"
       :key="index"
       :value="index"
     >{{item}}</option>
@@ -12,15 +12,41 @@
 </template>
 
 <script>
+import bus from '../components/Bus'
+
 export default {
   props: {
-    status: Number,
-    tag: Array
+    status: Number
   },
   data () {
     return {
-      cStatus: this.status
+      cStatus: this.status,
+      tagList: []
     }
+  },
+  beforeCreate () {
+    console.log('beforeCreate')
+  },
+  created () {
+    console.log('created')
+  },
+  beforeMount () {
+    console.log('beforeMount')
+  },
+  mounted () {
+    console.log('mounted')
+  },
+  beforeUpdate () {
+    console.log('beforeUpdate')
+  },
+  updated () {
+    console.log('updated')
+  },
+  beforeDestroy () {
+    console.log('beforeDestroy')
+  },
+  destroyed () {
+    console.log('destroyed')
   },
   methods: {
     updateData (e) {
