@@ -1,14 +1,14 @@
 <template>
-	<!-- <ul class="record-list">
+	<ul class="record-list">
 		<li class="record-item" v-for="(item, index) in recordList" :key="index">
 			<span class="txt-progress fr">{{ item.progress }}%</span>
 			<span class="txt-time">{{ item.time }}</span>
-			<Select />
+			<Select type="getTypeList"/>
 			<p>
 				<textarea placeholder="写下任务进度记录~" class="textarea" rows="1" v-model="item.record" @change="handleOnChange($event, item.id)" @blur="handleOnBlur"></textarea>
 			</p>
 		</li>
-	</ul> -->
+	</ul>
 </template>
 
 <script>
@@ -17,7 +17,7 @@ import Select from './Select'
 
 export default {
   components: {
-    // Select
+    Select
   },
   data () {
     return {
@@ -38,9 +38,6 @@ export default {
 			}
      */
 		recordList: Array
-  },
-  created () {
-   console.log(this.recordList)
   },
   methods: {
     async handleOnChange (e, id) {

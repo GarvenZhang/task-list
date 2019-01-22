@@ -4,7 +4,7 @@
     v-model="cStatus"
   >
     <option
-      v-for="(item, index) in tagList"
+      v-for="(item, index) in list"
       :key="index"
       :value="index"
     >{{item}}</option>
@@ -16,41 +16,53 @@ import bus from '../components/Bus'
 
 export default {
   props: {
-    status: Number
+    status: Number,
+    type: String
   },
   data () {
     return {
       cStatus: this.status,
-      tagList: []
+      list: []
     }
   },
-  beforeCreate () {
-    console.log('beforeCreate')
-  },
+  // beforeCreate () {
+  //   console.log('beforeCreate')
+  // },
   created () {
-    console.log('created')
+
+    // console.log('created')
+    this.getData();
+    
   },
-  beforeMount () {
-    console.log('beforeMount')
-  },
+  // beforeMount () {
+  //   console.log('beforeMount')
+  // },
   mounted () {
     console.log('mounted')
+
   },
-  beforeUpdate () {
-    console.log('beforeUpdate')
-  },
+  // beforeUpdate () {
+  //   console.log('beforeUpdate')
+  // },
   updated () {
     console.log('updated')
+    this.getData();
+
   },
-  beforeDestroy () {
-    console.log('beforeDestroy')
-  },
-  destroyed () {
-    console.log('destroyed')
-  },
+  // beforeDestroy () {
+  //   console.log('beforeDestroy')
+  // },
+  // destroyed () {
+  //   console.log('destroyed')
+  // },
   methods: {
     updateData (e) {
       this.$emit('updateData', e, 'status')
+    },
+    getData () {
+      bus.$on(this.type, (data) => {
+        this.list = data;
+      });
     }
   }
 };

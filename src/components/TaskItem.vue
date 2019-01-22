@@ -25,7 +25,7 @@
                 :value="data.name"
                 @input="updateData($event, 'name')"
               >
-              <Select :status="data.status" :tag="tags" @updateData="updateData"/>
+              <Select :status="data.status" type="getTagList" @updateData="updateData"/>
             </div>
           </div>
           <div class="row row--progress">

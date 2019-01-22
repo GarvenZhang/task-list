@@ -52,16 +52,10 @@ export default {
     // 获取tagList
     await this.getTagList();
 
-    // 监听
-    bus.$on('getTagList', cb => {
-      cb(this.tagList)
-      console.log(cb)
-    })
-    bus.$on('getTypeList', cb => {
-      cb(this.typeList)
-    })
-
-	},
+    //
+    bus.$emit('getTagList', this.tagList)
+    bus.$emit('getTypeList', this.typeList)
+  },
 	methods: {
 		async addHandle() {
 			let id = this.list.length + 1;
