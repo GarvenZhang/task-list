@@ -1,6 +1,6 @@
-import Index from '../pages/Index'
-import Draft from '../pages/Draft'
-import Tag from '../pages/Tag'
+import Index from '../modules/task'
+import Draft from '../modules/draft'
+import Tag from '../modules/tag'
 
 const routes = [{
   path: '/',

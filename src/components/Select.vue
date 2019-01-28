@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import bus from '../components/Bus'
 
 export default {
   props: {
@@ -60,9 +59,7 @@ export default {
       this.$emit('updateData', e, 'status')
     },
     getData () {
-      bus.$on(this.type, (data) => {
-        this.list = data;
-      });
+     
     }
   }
 };

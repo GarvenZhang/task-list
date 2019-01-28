@@ -17,14 +17,13 @@
 </template>
 
 <script>
-import TaskItem from "../components/TaskItem";
-import AddIcon from "../components/addIcon";
-import Input from "../components/Input";
-import idb from "../lib/indexeddb";
-import bus from '../components/Bus'
+import TaskItem from "../../components/TaskItem";
+import AddIcon from "../../components/addIcon";
+import Input from "../../components/Input";
+import idb from "../../lib/indexeddb";
 
-import { tag } from '../data/tag';
-import { type } from '../data/type';
+import { tag } from '../../data/tag';
+import { type } from '../../data/type';
 
 export default {
 	components: {
@@ -51,10 +50,6 @@ export default {
     await this.getTypeList();
     // 获取tagList
     await this.getTagList();
-
-    //
-    bus.$emit('getTagList', this.tagList)
-    bus.$emit('getTypeList', this.typeList)
   },
 	methods: {
 		async addHandle() {
